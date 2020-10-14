@@ -17,5 +17,8 @@ steps:
   inputs:
     azureSubscription: 'Connexion-Abonnement-Azure'
     ScriptType: 'InlineScript'
-    Inline: '$tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString(''yyyy-MM-ddTHH:mm:ss.fffffffZ''))'
+    Inline: |
+      $tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString(''yyyy-MM-ddTHH:mm:ss.fffffffZ''))
+      Write-Host "##vso[task.setvariable variable=tokenexp;]$tokenexp"
+    errorActionPreference: 'silentlyContinue'
     azurePowerShellVersion: 'LatestVersion'
