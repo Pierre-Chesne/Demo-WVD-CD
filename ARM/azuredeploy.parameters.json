@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpools-name": {
+            "value": "Host-Pool-01"
+        },
+        "poolType": {
+            "value": "pooled"
+        },
+        "lbType": {
+            "value": "BreadthFirst"
+        },
+        "tokenExpirationTime": {
+            "value": "Overide_ Azure_Devop"
+        },
+        "workspaces-name": {
+            "value": "Workspace-01"
+        },
+        "Numbers-of-VM": {
+            "value": 2
+        },
+        "vmSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "publisherName": {
+            "value": "MicrosoftWindowsDesktop"
+        },
+        "offerName": {
+            "value": "office-365"
+        },
+        "skuName": {
+            "value": "20h1-evd-o365pp"
+        },
+        "host-name-prefix": {
+            "value": "hostVDI"
+        },
+        "Username": {
+            "value": "pierrc"
+        },
+        "pwdUser": {
+            "reference": {
+                "keyVault": {
+                    "id":"/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-AD-WVD/providers/Microsoft.KeyVault/vaults/kv-pierrc"
+                },
+                "secretName": "pwdpierrc"
+            }
+        },
+        "domainName": {
+            "value": "ma-pme.local"
+        },
+        "domainUsername": {
+            "value": "pierrc@ma-pme.local"
+        },
+        "domainUsernamePassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-AD-WVD/providers/Microsoft.KeyVault/vaults/kv-pierrc"
+                },
+                "secretName": "pwdpierrc"
+            }
+        },
+        "virtualNetworkResourceGroupName": {
+            "value": "RG-AD-WVD"
+        },
+        "virtualNetworkName": {
+            "value": "AD-WVD-vnet"
+        },
+        "subnetName": {
+            "value": "subnet-test"
+        }
+    }
+}
