@@ -17,13 +17,5 @@ steps:
   inputs:
     azureSubscription: 'Connexion-Abonnement-Azure'
     ScriptType: 'InlineScript'
-    Inline: |
-      $tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-      Write-Host "##vso[task.setvariable variable=tokenexp;]$tokenexp"
-      $rg = Get-AzResourceGroup -Name $(rgName) -Location $(location)
-      if($rg -eq $null)
-      {
-        New-AzResourceGroup -name $(rgName) -location $(location)
-      }
-    errorActionPreference: 'stop'
+    Inline: '$tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString(''yyyy-MM-ddTHH:mm:ss.fffffffZ''))'
     azurePowerShellVersion: 'LatestVersion'
