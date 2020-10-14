@@ -1,0 +1,29 @@
+# Deploiement d'un hostpool
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  location: 'East US 2'
+  rgName: 'RG-WVD-Hosts'
+
+steps:
+
+- task: AzurePowerShell@5
+  displayName: 'Creation du Token Expiration et RG'
+  inputs:
+    azureSubscription: 'Connexion-Abonnement-Azure'
+    ScriptType: 'InlineScript'
+    Inline: |
+      $tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+      Write-Host "##vso[task.setvariable variable=tokenexp;]$tokenexp"
+      $rg = Get-AzResourceGroup -Name $(rgName) -Location $(location)
+      if($rg -eq $null)
+      {
+        New-AzResourceGroup -name $(rgName) -location $(location)
+      }
+    errorActionPreference: 'stop'
+    azurePowerShellVersion: 'LatestVersion'
