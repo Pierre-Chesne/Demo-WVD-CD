@@ -1,5 +1,3 @@
-# Deploiement d'un hostpool
-
 trigger:
 - master
 
@@ -10,20 +8,40 @@ variables:
   location: 'East US 2'
   rgName: 'RG-WVD-Hosts'
 
+
 steps:
 
 - task: AzurePowerShell@5
   displayName: 'Creation du Token Expiration et RG'
   inputs:
-    azureSubscription: 'Connexion-Abonnement-Azure'
+    azureSubscription: 'AzureMSDN'
     ScriptType: 'InlineScript'
     Inline: |
-      $tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString(''yyyy-MM-ddTHH:mm:ss.fffffffZ''))
+      $tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
       Write-Host "##vso[task.setvariable variable=tokenexp;]$tokenexp"
-      $rg = Get-AzResourceGroup -Name $(rgName) -location $(location)
       if($rg -eq $null)
       {
         New-AzResourceGroup -name $(rgName) -location $(location)
       }
     errorActionPreference: 'silentlyContinue'
     azurePowerShellVersion: 'LatestVersion'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: 'Deploiement du Template ARM'
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'AzureMSDN'
+    subscriptionId: '45d70f51-2e63-4daa-8870-27e468ba9baa'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: $(rgName)
+    location: $(location)
+    templateLocation: 'Linked artifact'
+    csmFile: '$(Build.SourcesDirectory)\ARM\azuredeploy.json'
+    csmParametersFile: '$(Build.SourcesDirectory)\ARM\azuredeploy.parameters.json'
+    overrideParameters: '-tokenExpirationTime $(tokenexp)'
+    deploymentMode: 'Incremental'
+
+
+
+
+
