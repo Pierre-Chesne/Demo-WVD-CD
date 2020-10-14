@@ -14,7 +14,7 @@ steps:
 - task: AzurePowerShell@5
   displayName: 'Creation du Token Expiration et RG'
   inputs:
-    azureSubscription: 'AzureMSDN'
+    azureSubscription: 'Connexion-Abonnement-Azure'
     ScriptType: 'InlineScript'
     Inline: |
       $tokenexp = $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
@@ -30,7 +30,7 @@ steps:
   displayName: 'Deploiement du Template ARM'
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'AzureMSDN'
+    azureResourceManagerConnection: 'Connexion-Abonnement-Azure'
     subscriptionId: '45d70f51-2e63-4daa-8870-27e468ba9baa'
     action: 'Create Or Update Resource Group'
     resourceGroupName: $(rgName)
